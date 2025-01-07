@@ -6,6 +6,7 @@ import ButtonsGrid from './component/buttonsGrid';
 interface Buttons {
   display: string;
   arithmetic: string;
+  color?: string;
   onPressed: () => void;
 };
 
@@ -15,6 +16,7 @@ function App() {
     CALCULATOR_BUTTONS.map(button => ({
       display: button.display,
       arithmetic: button.arithmetic,
+      color: button.color,
       onPressed: () => {
         switch (button.arithmetic) {
           case "clear":

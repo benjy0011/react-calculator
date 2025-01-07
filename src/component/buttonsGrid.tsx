@@ -2,6 +2,7 @@ import { Button, Grid2 } from "@mui/material";
 
 interface Buttons {
     display: string;
+    color?: string;
     onPressed: () => void;
 }
 
@@ -13,6 +14,7 @@ interface ButtonsGridProps {
     bg?: string;
     p?: string;
     bRadius?: string;
+    color?: string;
 }
 
 const btnVariant = "contained";
@@ -21,7 +23,7 @@ const ButtonsGrid: React.FC<ButtonsGridProps> = ({
     gridX,
     buttons,
     w = "300px",
-    h = "350px",
+    h = "360px",
     bg = "#666666",
     p = "10px",
     bRadius = "10px",
@@ -61,6 +63,8 @@ const ButtonsGrid: React.FC<ButtonsGridProps> = ({
                                     onClick={buttons[index].onPressed}
                                     sx={{
                                         borderRadius: "50%",
+                                        backgroundColor: buttons[index].color,
+                                        fontSize: "20px",
                                     }}
                                 >
                                     {buttons[index].display}
@@ -70,6 +74,7 @@ const ButtonsGrid: React.FC<ButtonsGridProps> = ({
                                     disabled={true}
                                     sx={{
                                         borderRadius: "50%",
+                                        fontSize: "20px",
                                     }}
                                 >
                                     n/a
