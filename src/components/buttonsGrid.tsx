@@ -27,7 +27,7 @@ const ButtonsGrid: React.FC<ButtonsGridProps> = ({
     h = "360px",
     bg = "#666666",
     p = "10px",
-    bRadius = "10px",
+    bRadius = "0px 0px 10px 10px",
 }) => {
 
 

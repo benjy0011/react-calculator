@@ -1,7 +1,7 @@
 const CALCULATOR_BUTTONS = [
     { display: "(", arithmetic: "(", color: "#3A3F50", name: "open-parenthesis" },
     { display: ")", arithmetic: ")", color: "#3A3F50", name: "close-parenthesis" },
-    { display: "%", arithmetic: "* 0.01", color: "#3A3F50", name: "percentage" },
+    { display: "%", arithmetic: "%", color: "#3A3F50", name: "percentage" },
     { display: "AC", arithmetic: "clear", color: "#3A3F50", name: "clear" },
     { display: "7", arithmetic: "7", color: "#333438", name: "seven" },
     { display: "8", arithmetic: "8", color: "#333438", name: "eight" },
