@@ -16,6 +16,7 @@ interface CalculatorParam {
   currentBtnDisplay: string;
   decimalCheck: boolean;
   equalCheck: boolean;
+  parenthesisCheck: boolean;
 };
 
 interface Buttons {
@@ -23,7 +24,7 @@ interface Buttons {
   arithmetic: string;
   color?: string;
   name?: string;
-  onPressed: () => void;
+  onPressed?: () => void;
 };
 
 const calculate = (expression: string): string => {
@@ -45,81 +46,77 @@ function App() {
     currentBtnDisplay: "",
     decimalCheck: false,
     equalCheck: false,
+    parenthesisCheck: false,
   });
   const [calculatorBtns] = useState<Buttons[]>(() => 
     CALCULATOR_BUTTONS.map(button => ({
-      display: button.display,
-      arithmetic: button.arithmetic,
-      color: button.color,
-      name: button.name || `${button.color}-${button.arithmetic}`,
-      onPressed: () => {
-        setCalculatorObj(prev => ({
-          ...prev,
-          currentBtn: button.arithmetic,
-          currentBtnDisplay: button.display,
-        }));
-      },
+      ...button,
+      onPressed: () => handleButtonClick(button),
     }))
   );
 
-  useEffect(() => {
-    const isInvalid: boolean = calculatorObj.equalCheck;
+ const handleButtonClick = (button: Buttons) => {
+  const { arithmetic, display } = button;
 
-    if (calculatorObj.currentBtn === '=') {
-      const calculated: string = calculate(calculatorObj.equation);
-      setCalculatorObj({
-        ...calculatorObj,
-        result: calculated,
-        equation: calculated,
-        display: calculated,
-        currentBtn: "",
-        equalCheck: true,
-      });
-    } 
-    else if (calculatorObj.currentBtn === '.' && !calculatorObj.decimalCheck) {
-      setCalculatorObj({
-        ...calculatorObj,
-        equation: isInvalid ? '.' : calculatorObj.equation + '.',
-        display: isInvalid ? '.' : calculatorObj.display + '.',
-        decimalCheck: true,
-        currentBtn: "",
-        equalCheck: false,
-      });
-    } 
-    else if (['+', '-', '*', '/', ')', '%'].includes(calculatorObj.currentBtn)) {
-      setCalculatorObj({
-        ...calculatorObj,
-        decimalCheck: false,
-        equation: `${calculatorObj.equation}${calculatorObj.currentBtn}`,
-        display: `${calculatorObj.display} ${calculatorObj.currentBtnDisplay} `,
-        currentBtn: "",
-        equalCheck: false,
-      });
-    }
-    else if (calculatorObj.currentBtn === "clear") {
-      setCalculatorObj({
-        result: "0",
-        display: "",
-        equation: "",
-        currentBtn: "",
-        currentBtnDisplay: "",
-        decimalCheck: false,
-        equalCheck: false,
-      });
-    }
-    else if (calculatorObj.currentBtn !== "") {
-      setCalculatorObj({
-        ...calculatorObj,
-        equation: isInvalid ? `${calculatorObj.currentBtnDisplay}` : `${calculatorObj.equation}${calculatorObj.currentBtn}`,
-        display: isInvalid ? `${calculatorObj.currentBtnDisplay}` : `${calculatorObj.display}${calculatorObj.currentBtnDisplay}`,
-        currentBtn: "",
-        equalCheck: false,
-      });
-    }
+  if (arithmetic === "clear") {
+    setCalculatorObj({
+      result: "0",
+      display: "",
+      equation: "",
+      currentBtn: "",
+      currentBtnDisplay: "",
+      decimalCheck: false,
+      equalCheck: false,
+      parenthesisCheck: false,
+    });
+    return;
+  }
 
-    console.log(calculatorObj);
-  }, [calculatorObj])
-  
+  if (arithmetic === "=") {
+    setCalculatorObj((prev) => ({
+      ...prev,
+      result: calculate(prev.equation),
+      display: calculate(prev.equation),
+      equation: calculate(prev.equation),
+      equalCheck: true,
+      currentBtn: "",
+    }));
+    return;
+  }
+
+  if (arithmetic === "." && !calculatorObj.decimalCheck) {
+    setCalculatorObj((prev) => ({
+      ...prev,
+      equation: prev.equalCheck ? '.' : prev.equation + '.',
+      display: prev.equalCheck ? '.' : prev.display + '.',
+      decimalCheck: true,
+      equalCheck: false,
+    }));
+    return;
+  }
+
+  if (['+', '-', '*', '/', '%'].includes(arithmetic)) {
+    setCalculatorObj((prev) => ({
+      ...prev,
+      equation: prev.equation === "" ? `0${arithmetic}` : `${prev.equation}${arithmetic}`,
+      display: prev.equation === "" ? `0 ${display} ` : `${prev.display} ${display} `,
+      decimalCheck: false,
+      equalCheck: false,
+    }));
+    return;
+  }
+
+  setCalculatorObj((prev) => ({
+    ...prev,
+    equation: prev.equalCheck ? display : prev.equation + arithmetic,
+    display: prev.equalCheck ? display : `${prev.display}${display}`,
+    equalCheck: false,
+  }));
+ }
+
+ useEffect(() => {
+  console.log(calculatorObj);
+ }, [calculatorObj])
 
   return (
     <>
