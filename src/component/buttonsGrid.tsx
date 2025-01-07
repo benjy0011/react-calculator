@@ -3,6 +3,7 @@ import { Button, Grid2 } from "@mui/material";
 interface Buttons {
     display: string;
     color?: string;
+    name?: string;
     onPressed: () => void;
 }
 
@@ -32,8 +33,6 @@ const ButtonsGrid: React.FC<ButtonsGridProps> = ({
 
     const size = buttons.length;
 
-    
-
     return (
         <>
             <Grid2
@@ -59,6 +58,7 @@ const ButtonsGrid: React.FC<ButtonsGridProps> = ({
                         {
                             buttons[index]
                                 ? <Button 
+                                    id={buttons[index].name}
                                     variant={btnVariant}
                                     onClick={buttons[index].onPressed}
                                     sx={{

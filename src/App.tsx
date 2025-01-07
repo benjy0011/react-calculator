@@ -7,6 +7,7 @@ interface Buttons {
   display: string;
   arithmetic: string;
   color?: string;
+  name?: string;
   onPressed: () => void;
 };
 
@@ -17,6 +18,7 @@ function App() {
       display: button.display,
       arithmetic: button.arithmetic,
       color: button.color,
+      name: button.name || `${button.color}-${button.arithmetic}`,
       onPressed: () => {
         switch (button.arithmetic) {
           case "clear":
