@@ -4,7 +4,7 @@ interface Buttons {
     display: string;
     color?: string;
     name?: string;
-    onPressed: () => void;
+    onPressed?: () => void;
 }
 
 interface ButtonsGridProps {
