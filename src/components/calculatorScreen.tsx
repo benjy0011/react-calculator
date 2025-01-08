@@ -8,7 +8,7 @@ interface CalculatorScreenProps {
     value?: string | number;
     fontSize?: string;
     fontColor?: string;
-    heigth?: string;
+    height?: string;
     width?: string;
 };
 
@@ -17,7 +17,7 @@ const CalculatorScreen: React.FC<CalculatorScreenProps> = ({
     value,
     fontSize='30px',
     fontColor,
-    heigth,
+    height,
     width,
  }) => {
 
@@ -26,7 +26,7 @@ const CalculatorScreen: React.FC<CalculatorScreenProps> = ({
         textAlign: 'right',
         fontSize: fontSize,
         color: fontColor || theme.palette.text.secondary,
-        height: heigth || "80px",
+        height: height || "80px",
         width: width || "300px",
         lineHeight: heigth || "80px",
         letterSpacing: "0px",

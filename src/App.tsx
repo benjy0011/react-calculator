@@ -136,7 +136,7 @@ function App() {
         <Grid2 size={12}>
           <CalculatorScreen 
             id={"display"} 
-            heigth={"50px"} 
+            height={"50px"} 
             // value={calculatorObj.equation || calculatorObj.result} // for fcc testing
             value={calculatorObj.result}
           />
@@ -144,7 +144,7 @@ function App() {
         <Grid2 size={12}>
           <CalculatorScreen 
             id={"arithmetic-screen"} 
-            heigth={"30px"} 
+            height={"30px"} 
             value={calculatorObj.display} // for fcc testing
             fontSize={"15px"} 
             fontColor="#888888"
