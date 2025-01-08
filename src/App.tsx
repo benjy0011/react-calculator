@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import './App.scss';
 import CALCULATOR_BUTTONS from './constants/CALCULATOR_BUTTONS';
 import ButtonsGrid from './components/buttonsGrid';
 import CalculatorScreen from './components/calculatorScreen';
 import { Grid2, Paper } from '@mui/material';
-import { evaluate } from "mathjs";
+import { evaluate, format } from "mathjs";
 
 const WIDTH = "300px";
 
@@ -30,11 +30,15 @@ interface Buttons {
 const calculate = (expression: string): string => {
   try {
     const result = evaluate(expression);
-    return typeof result === "number" && !isNaN(result) ? `${result}` : "Error"; 
+    return typeof result === "number" && !isNaN(result) ? `${format(result, { precision: 14 })}` : "Error"; 
   } catch (err) { 
     console.error(`Calculator error: ${err}`)
     return `Error`;
   }
+};
+
+const correctZeroString = (expression: string): string => {
+  return expression.replace(/\b0+\b/g, "0");
 };
 
 function App() {
@@ -84,7 +88,11 @@ function App() {
     return;
   }
 
-  if (arithmetic === "." && !calculatorObj.decimalCheck) {
+  if (arithmetic === ".") {
+    if (calculatorObjRef.current.decimalCheck) {
+      return;
+    };
+
     setCalculatorObj((prev) => ({
       ...prev,
       equation: prev.equalCheck ? '.' : prev.equation + '.',
@@ -108,15 +116,16 @@ function App() {
 
   setCalculatorObj((prev) => ({
     ...prev,
-    equation: prev.equalCheck ? display : prev.equation + arithmetic,
-    display: prev.equalCheck ? display : `${prev.display}${display}`,
+    equation: prev.equalCheck ? display : correctZeroString(prev.equation + arithmetic),
+    display: prev.equalCheck ? display : correctZeroString(prev.display + display),
     equalCheck: false,
   }));
  }
 
+ const calculatorObjRef = useRef(calculatorObj);
  useEffect(() => {
-  console.log(calculatorObj);
- }, [calculatorObj])
+  calculatorObjRef.current = calculatorObj;
+ }, [calculatorObj]);
 
   return (
     <>
@@ -128,14 +137,15 @@ function App() {
           <CalculatorScreen 
             id={"display"} 
             heigth={"50px"} 
-            value={calculatorObj.result} 
+            // value={calculatorObj.equation || calculatorObj.result} // for fcc testing
+            value={calculatorObj.result}
           />
         </Grid2>
         <Grid2 size={12}>
           <CalculatorScreen 
             id={"arithmetic-screen"} 
             heigth={"30px"} 
-            value={calculatorObj.display}
+            value={calculatorObj.display} // for fcc testing
             fontSize={"15px"} 
             fontColor="#888888"
           />
