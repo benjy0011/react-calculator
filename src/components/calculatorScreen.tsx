@@ -28,7 +28,7 @@ const CalculatorScreen: React.FC<CalculatorScreenProps> = ({
         color: fontColor || theme.palette.text.secondary,
         height: height || "80px",
         width: width || "300px",
-        lineHeight: heigth || "80px",
+        lineHeight: height || "80px",
         letterSpacing: "0px",
         textOverflow: "ellipsis",
         overflow: "hidden",
